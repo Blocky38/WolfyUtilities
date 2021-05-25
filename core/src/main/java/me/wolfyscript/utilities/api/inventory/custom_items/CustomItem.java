@@ -449,7 +449,11 @@ public class CustomItem extends AbstractItemBuilder<CustomItem> implements Keyed
             if ((exactMeta || hasItemMeta()) && (isAdvanced() || (getApiReference() instanceof VanillaRef && !hasNamespacedKey()))) {
                 ItemBuilder customItem = new ItemBuilder(getItemStack().clone());
                 ItemBuilder customItemOther = new ItemBuilder(otherItem.clone());
-                return getMetaSettings().check(customItemOther, customItem) && Bukkit.getItemFactory().equals(customItem.getItemMeta(), customItemOther.getItemMeta());
+                if (isAdvanced() && !getMetaSettings().check(customItemOther, customItem)) {
+                    return false;
+                } else if (getApiReference() instanceof VanillaRef && !hasNamespacedKey()) {
+                    return Bukkit.getItemFactory().equals(customItem.getItemMeta(), customItemOther.getItemMeta());
+                }
             }
             return true;
         }
