@@ -14,22 +14,24 @@ public class AttributesModifiersMeta extends Meta {
         setAvailableOptions(MetaSettings.Option.EXACT, MetaSettings.Option.IGNORE);
     }
 
+    private static boolean compareModifiers(Multimap<Attribute, AttributeModifier> first, Multimap<Attribute, AttributeModifier> second) {
+        if (first != null && second != null) {
+            return first.entries().stream().allMatch(entry -> second.containsEntry(entry.getKey(), entry.getValue())) && second.entries().stream().allMatch(entry -> first.containsEntry(entry.getKey(), entry.getValue()));
+        } else {
+            return false;
+        }
+    }
+
     @Override
     public boolean check(ItemBuilder itemOther, ItemBuilder item) {
         ItemMeta metaOther = itemOther.getItemMeta();
         ItemMeta meta = item.getItemMeta();
-        if (option.equals(MetaSettings.Option.IGNORE)) {
-            if (metaOther.hasAttributeModifiers()) {
-                Multimap<Attribute, AttributeModifier> modifiers = metaOther.getAttributeModifiers();
-                modifiers.keySet().forEach(metaOther::removeAttributeModifier);
-            }
+        if (option.equals(MetaSettings.Option.EXACT)) {
             if (meta.hasAttributeModifiers()) {
-                Multimap<Attribute, AttributeModifier> modifiers = metaOther.getAttributeModifiers();
-                modifiers.keySet().forEach(metaOther::removeAttributeModifier);
+                return metaOther.hasAttributeModifiers() && compareModifiers(meta.getAttributeModifiers(), metaOther.getAttributeModifiers());
             }
+            return !metaOther.hasAttributeModifiers();
         }
-        itemOther.setItemMeta(metaOther);
-        item.setItemMeta(meta);
         return true;
     }
 }
