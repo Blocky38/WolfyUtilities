@@ -15,12 +15,8 @@ public class PlayerHeadMeta extends Meta {
         if(option.equals(MetaSettings.Option.EXACT)){
             String valueOther = itemOther.getPlayerHeadValue();
             String value = item.getPlayerHeadValue();
-            if(!valueOther.equals(value)){
-                return false;
-            }
+            return valueOther.equals(value);
         }
-        itemOther.removePlayerHeadValue();
-        item.removePlayerHeadValue();
         return true;
     }
 }
