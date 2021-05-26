@@ -14,26 +14,26 @@ public class RepairCostMeta extends Meta {
 
     @Override
     public boolean check(ItemBuilder itemOther, ItemBuilder item) {
+        if (option.equals(MetaSettings.Option.IGNORE)) {
+            return true;
+        }
         ItemMeta metaOther = itemOther.getItemMeta();
         ItemMeta meta = item.getItemMeta();
-        if (metaOther instanceof Repairable && meta instanceof Repairable) {
-            switch (option) {
-                case EXACT:
-                    return ((Repairable) metaOther).getRepairCost() == ((Repairable) meta).getRepairCost();
-                case IGNORE:
-                    ((Repairable) metaOther).setRepairCost(0);
-                    ((Repairable) meta).setRepairCost(0);
-                    itemOther.setItemMeta(metaOther);
-                    item.setItemMeta(meta);
-                    return true;
-                case LOWER:
-                    return ((Repairable) metaOther).getRepairCost() < ((Repairable) meta).getRepairCost();
-                case HIGHER:
-                    return ((Repairable) metaOther).getRepairCost() > ((Repairable) meta).getRepairCost();
-                default:
-                    return true;
+        if (meta instanceof Repairable) {
+            if (metaOther instanceof Repairable) {
+                switch (option) {
+                    case EXACT:
+                        return ((Repairable) metaOther).getRepairCost() == ((Repairable) meta).getRepairCost();
+                    case LOWER:
+                        return ((Repairable) metaOther).getRepairCost() < ((Repairable) meta).getRepairCost();
+                    case HIGHER:
+                        return ((Repairable) metaOther).getRepairCost() > ((Repairable) meta).getRepairCost();
+                    default:
+                        return false;
+                }
             }
+            return false;
         }
-        return true;
+        return !(metaOther instanceof Repairable);
     }
 }

@@ -13,21 +13,18 @@ public class CustomModelDataMeta extends Meta {
 
     @Override
     public boolean check(ItemBuilder itemOther, ItemBuilder item) {
+        if (option.equals(MetaSettings.Option.IGNORE)) {
+            return true;
+        }
         ItemMeta meta1 = itemOther.getItemMeta();
         ItemMeta meta2 = item.getItemMeta();
         switch (option) {
-            case IGNORE:
-                meta1.setCustomModelData(0);
-                meta2.setCustomModelData(0);
-                itemOther.setItemMeta(meta1);
-                item.setItemMeta(meta2);
-                return true;
             case LOWER:
                 return meta1.getCustomModelData() < meta2.getCustomModelData();
             case HIGHER:
                 return meta1.getCustomModelData() > meta2.getCustomModelData();
             default:
-                return true;
+                return false;
         }
     }
 }

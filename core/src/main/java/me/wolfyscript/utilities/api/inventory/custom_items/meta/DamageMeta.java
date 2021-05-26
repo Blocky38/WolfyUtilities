@@ -14,17 +14,14 @@ public class DamageMeta extends Meta {
 
     @Override
     public boolean check(ItemBuilder itemOther, ItemBuilder item) {
+        if (option.equals(MetaSettings.Option.IGNORE)) {
+            return true;
+        }
         ItemMeta metaOther = itemOther.getItemMeta();
         ItemMeta meta = item.getItemMeta();
         switch (option) {
             case EXACT:
-                return ((Damageable)metaOther).getDamage() == ((Damageable)meta).getDamage();
-            case IGNORE:
-                ((Damageable) metaOther).setDamage(0);
-                ((Damageable) meta).setDamage(0);
-                itemOther.setItemMeta(metaOther);
-                item.setItemMeta(meta);
-                return true;
+                return ((Damageable) metaOther).getDamage() == ((Damageable) meta).getDamage();
             case LOWER:
                 return ((Damageable) metaOther).getDamage() < ((Damageable) meta).getDamage();
             case HIGHER:
