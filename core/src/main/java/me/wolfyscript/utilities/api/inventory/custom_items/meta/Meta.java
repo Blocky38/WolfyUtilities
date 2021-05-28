@@ -2,6 +2,7 @@ package me.wolfyscript.utilities.api.inventory.custom_items.meta;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
+import me.wolfyscript.utilities.api.inventory.custom_items.meta.modules.MetaModule;
 import me.wolfyscript.utilities.util.Keyed;
 import me.wolfyscript.utilities.util.NamespacedKey;
 import me.wolfyscript.utilities.util.inventory.item_builder.ItemBuilder;
@@ -15,12 +16,12 @@ import java.util.Objects;
 
 public abstract class Meta implements Keyed {
 
+    protected MetaModule.Type moduleType;
     protected MetaSettings.Option option;
-
-    @JsonIgnore
-    private NamespacedKey namespacedKey;
-    @JsonIgnore
-    private List<MetaSettings.Option> availableOptions;
+    private @JsonIgnore
+    NamespacedKey namespacedKey;
+    private @JsonIgnore
+    List<MetaSettings.Option> availableOptions;
 
     public MetaSettings.Option getOption() {
         return option;
@@ -67,6 +68,10 @@ public abstract class Meta implements Keyed {
 
     final void setNamespacedKey(NamespacedKey namespacedKey) {
         this.namespacedKey = namespacedKey;
+    }
+
+    public MetaModule.Type getModuleType() {
+        return moduleType;
     }
 
     public static class Provider<M extends Meta> implements Keyed {

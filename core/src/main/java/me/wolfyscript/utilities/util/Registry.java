@@ -203,7 +203,7 @@ public interface Registry<V extends Keyed> extends Iterable<V> {
     class MetaRegistry extends SimpleRegistry<Meta.Provider<?>> {
 
         public void register(NamespacedKey key, Class<? extends Meta> metaType) {
-            register(new Meta.Provider<>(key, metaType));
+            super.register(new Meta.Provider<>(key, metaType));
         }
 
     }
